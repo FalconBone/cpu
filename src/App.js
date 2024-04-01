@@ -1,23 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import classes from './App.module.css';
+import Values from './pages/Values';
+import Graphics from './pages/Graphics';
 
 function App() {
+
+  const [page, setPage] = useState('values')
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={classes.container}>
+      <div className={classes.buttons}>
+        <button onClick={() => setPage('values')}>Значения</button>
+        <button onClick={() => setPage('graphic')}>Графики</button>
+      </div>
+      <div className={classes.page}>
+        {page === 'values' ? <Values/> : <Graphics/>}
+      </div>
     </div>
   );
 }
