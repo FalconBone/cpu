@@ -6,7 +6,7 @@ import axios from "axios"
 
 const Graphics = () => {
 
-    const _MINUTE = 'minute', _HOUR = 'hour', _DAY = 'day', _WEAK = 'weak'
+    const _MINUTE = 'minute', _HOUR = 'hour', _DAY = 'day', _WEEK = 'week'
     
     const [time, setTime] = useState(_MINUTE)
 
@@ -17,14 +17,34 @@ const Graphics = () => {
     const [ramTemp, setRamTemp] = useState([])
 
     const fetchData = async () => {
-        await axios.post('', {})
-            .then((res) => {
-                console.log(res);
-            }) 
+        
+        const {data} = await axios.post('', {interaval: time})
+
+        console.log(data);
+
+        const cpuTempArray = []
+        const gpuTempArray = []
+        const cpuLoadArray = []
+        const gpuLoadArray = []
+        const ramTempArray = []
+
+        for (let i = 0; i < data.length; i++) {
+            cpuTempArray.push(data[i].cpu_temp)
+            gpuTempArray.push(data[i].gpu_temp)
+            cpuLoadArray.push(data[i].cpu_busy)
+            gpuLoadArray.push(data[i].gpu_busy)
+            ramTempArray.push(data[i].ram_busy)
+        }
+
+        setCpuTemp(cpuTempArray)
+        setGpuTemp(gpuTempArray)
+        setCpuLoad(cpuLoadArray)
+        setGpuLoad(gpuLoadArray)
+        setRamTemp(ramTempArray)
     }
 
     useEffect(() => {
-        //fetchData()
+        fetchData()
     }, [time])
 
     return (
@@ -39,7 +59,7 @@ const Graphics = () => {
                 <button onClick={() => setTime(_DAY)}>
                     День
                 </button>
-                <button onClick={() => setTime(_WEAK)}>
+                <button onClick={() => setTime(_WEEK)}>
                     Неделя
                 </button>
             </div>

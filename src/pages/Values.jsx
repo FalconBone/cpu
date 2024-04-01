@@ -5,13 +5,17 @@ import ValueWithInput from '../Components/ChartWrapper/ValueWithInput';
 
 const Values = () => {
 
-    const [values, setValues] = useState([])
+    const sendCriticalValues = () => {
+      axios.post('', {CPU_TEMP_CRITICAL: criticalCpuTemp, GPU_TEMP_CRITICAL: criticalGpuTemp, CPU_BUSY_CRITICAL: criticalCpuLoad, GPU_BUSY_CRITICAL: criticalGpuLoad, RAM_BUSY_CRITICAL: criticalRamLoad})
+    }
 
-    const [criticalCpuTemp, setCritcialCpuTemp] = useState(0)
-    const [criticalGpuTemp, setCritcialGpuTemp] = useState(0)
-    const [criticalCpuLoad, setCritcialCpuLoad] = useState(0)
-    const [criticalGpuLoad, setCritcialGpuLoad] = useState(0)
-    const [criticalRamLoad, setCritcialRamLoad] = useState(0)
+    const [values, setValues] = useState({})
+
+    const [criticalCpuTemp, setCritcialCpuTemp] = useState(null)
+    const [criticalGpuTemp, setCritcialGpuTemp] = useState(null)
+    const [criticalCpuLoad, setCritcialCpuLoad] = useState(null)
+    const [criticalGpuLoad, setCritcialGpuLoad] = useState(null)
+    const [criticalRamLoad, setCritcialRamLoad] = useState(null)
 
     useEffect(() => {
       subscribe()
@@ -19,7 +23,7 @@ const Values = () => {
   
     const subscribe = async () => {
       try {
-        const { data } = await axios.post('', {type: ''})
+        const { data } = await axios.get('')
         setValues(data)
       } catch (e) {
         setTimeout(() => {
@@ -30,12 +34,12 @@ const Values = () => {
 
     return (
         <div>
-            <ValueWithInput text={'Температура CPU'} value={1} criticalValue={criticalCpuTemp} setCriticalValue={setCritcialCpuTemp}/>
-            <ValueWithInput text={'Нагрузка CPU'} value={1} criticalValue={criticalGpuTemp} setCriticalValue={setCritcialGpuTemp}/>
-            <ValueWithInput text={'Температура GPU'} value={1} criticalValue={criticalCpuLoad} setCriticalValue={setCritcialCpuLoad}/>
-            <ValueWithInput text={'Нагрузка GPU'} value={1} criticalValue={criticalGpuLoad} setCriticalValue={setCritcialGpuLoad}/>
-            <ValueWithInput text={'Занятая ОЗУ'} value={1} criticalValue={criticalRamLoad} setCriticalValue={setCritcialRamLoad}/>
-            <button>Сохранить</button>
+            <ValueWithInput text={'Температура CPU'} value={values.cpu_temp} criticalValue={criticalCpuTemp} setCriticalValue={setCritcialCpuTemp}/>
+            <ValueWithInput text={'Нагрузка CPU'} value={values.cpu_busy} criticalValue={criticalGpuTemp} setCriticalValue={setCritcialGpuTemp}/>
+            <ValueWithInput text={'Температура GPU'} value={values.gpu_temp} criticalValue={criticalCpuLoad} setCriticalValue={setCritcialCpuLoad}/>
+            <ValueWithInput text={'Нагрузка GPU'} value={values.gpu_busy} criticalValue={criticalGpuLoad} setCriticalValue={setCritcialGpuLoad}/>
+            <ValueWithInput text={'Занятая ОЗУ'} value={values.ram_busy} criticalValue={criticalRamLoad} setCriticalValue={setCritcialRamLoad}/>
+            <button onClick={sendCriticalValues}>Сохранить</button>
         </div>
     )
 }

@@ -33,21 +33,25 @@ export const options = {
  }
 };
 
-const labels = ['', '', '', '', '', '', ''];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: labels.map(() => Math.random()),
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    }
-  ],
-};
-
 const ChartWrapper = (props) => {
+
+  const labels = [];
+
+  for (let i = 0; i < props.data.length; i++) {
+    labels.push('')
+  }
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: 'Dataset 1',
+        data: props.data,
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      }
+    ],
+  };
 
     return (
         <div className={classes.container}>
